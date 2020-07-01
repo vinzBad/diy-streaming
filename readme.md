@@ -1,0 +1,1 @@
+adapted from https://bitkeks.eu/blog/2020/03/desktop-video-streaming-server-obs-studio-nginx-rtmp-hls-videojs.html

@@ -1,0 +1,12 @@
+- name: disable sshd password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    validate: sshd -t -f %s
+    regex: ^(# *)?PasswordAuthentication
+    line: PasswordAuthentication no
+  notify:
+    - reload sshd
+
+- name: ensure up to date apt cache
+  apt:
+    cache_valid_time: 3600

@@ -1,0 +1,64 @@
+- apt:
+    pkg:
+      - nginx-full
+      - libnginx-mod-rtmp
+
+
+- file:
+    path: /var/www/hls
+    group: www-data 
+    owner: www-data
+    state: directory
+
+- file:
+    path: /var/www/dsh
+    group: www-data 
+    owner: www-data
+    state: directory
+
+- name: update nginx configs
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  notify: 
+    - reload nginx
+  loop:
+    - src: "nginx.conf.j2"
+      dest: "/etc/nginx/nginx.conf"
+    - src: "site-default.j2"
+      dest: "/etc/nginx/sites-available/default"
+  loop_control:
+    label: "{{ item.src }}"
+
+- name: update index.html
+  template:
+    src: "index.html.j2"
+    dest: "/var/www/html/index.html"
+    owner: "www-data"
+    group: "www-data"
+
+- name: upload website assets
+  copy:
+    src: "{{ item.src }}"
+    dest: "/var/www/html/"
+    owner: "www-data"
+    group: "www-data"
+  loop:
+    - src: "dash.all.min.js"    
+    - src: "video-js.min.css"
+    - src: "video.min.js"
+    - src: "videojs-http-streaming.min.js"
+  loop_control:
+    label: "{{ item.src }}"
+
+- name: setup mimetypes
+  lineinfile:
+    path: /etc/nginx/mime.types
+    line: "{{ item.line }}"
+    insertbefore: "^.*}"
+  loop:
+    - line: "\tapplication/vnd.apple.mpegurl m3u8;"
+    - line: "\tvideo/mp2t ts; "
+  notify: 
+    - reload nginx
+  
