@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>hls streaming client</title>
+        <meta charset="utf-8"/>
+        <link href="/video-js.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        <center>
+        <h1>hls streaming client</h1>
+
+        <video-js id="liveplayer" controls  width=600 class="vjs-default-skin">
+        </video-js>
+
+      
+
+
+        <script src="/video.min.js"></script>
+        <script src="/videojs-http-streaming.min.js"></script>
+        <!--<script src="/videojs-dash.min.js"></script>-->
+        <!--<script src="dash.all.min.js"></script>-->
+        <script>
+            prefix = "/{{ nginx_rtmp.stream_secret }}/view/hls/"
+            path = window.location.pathname // /secret/view/dash/<streamkey>
+            stream_key = path.split(prefix)[1]
+            stream_url = "https://{{ nginx_rtmp.server_name }}/{{ nginx_rtmp.stream_secret }}/hls/" + stream_key + ".m3u8"
+            console.log(stream_url)
+
+            var player = videojs("liveplayer");     
+            player.ready(function() {
+                player.src({
+                    src: stream_url,
+                    type: 'application/x-mpegURL'
+                });
+                player.play();
+            });
+        </script> 
+    </body>
+</html>

@@ -52,14 +52,14 @@ rtmp {
 
             # Use HLS transcoding
             hls on;
-            hls_path /var/www/hls;  # where fragments are stored
+            hls_path /var/www/{{ nginx_rtmp.stream_secret }}/hls;  # where fragments are stored
             hls_fragment 3s;  # length of each segment in seconds
             hls_playlist_length 30s;   # length of total recording in seconds
             hls_cleanup on;  # delete fragments on restart/shutdown
 
             # Same with DASH
             dash on;
-            dash_path /var/www/dsh;
+            dash_path /var/www/{{ nginx_rtmp.stream_secret }}/dsh;
             dash_fragment 2s;
             dash_playlist_length 1m;
             dash_cleanup on;

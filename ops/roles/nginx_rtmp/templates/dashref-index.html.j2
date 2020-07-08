@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <title>dash reference streaming client Rocks</title>
+        <style>
+            video {
+                width: 640px;
+                height: 360px;
+            }
+        </style>
+    </head>
+    <body>
+      <h1>dash reference streaming client</h1>
+
+        <div>
+            <video id="videoPlayer" controls></video>
+        </div>
+        <script src="/dash.all.min.js"></script>
+        <script>
+            (function(){
+                 prefix = "/{{ nginx_rtmp.stream_secret }}/view/dash/"
+                path = window.location.pathname // /secret/view/dash/<streamkey>
+                stream_key = path.split(prefix)[1]
+                mdp_url = "https://{{ nginx_rtmp.server_name }}/{{ nginx_rtmp.stream_secret }}/dsh/" + stream_key + ".mpd"
+                console.log(path)
+                console.log(prefix)
+                console.log(stream_key)
+                console.log(mdp_url)
+                var url = mdp_url;
+                var player = dashjs.MediaPlayer().create();
+                player.initialize(document.querySelector("#videoPlayer"), url, true);
+            })();
+        </script>
+    </body>
+</html>

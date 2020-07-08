@@ -5,13 +5,13 @@
 
 
 - file:
-    path: /var/www/hls
+    path: "/var/www/{{ nginx_rtmp.stream_secret }}/hls"
     group: www-data 
     owner: www-data
     state: directory
 
 - file:
-    path: /var/www/dsh
+    path: "/var/www/{{ nginx_rtmp.stream_secret }}/dsh"
     group: www-data 
     owner: www-data
     state: directory
@@ -37,6 +37,29 @@
     owner: "www-data"
     group: "www-data"
 
+- name: update shaka index.html
+  template:
+    src: "shaka-index.html.j2"
+    dest: "/var/www/html/shaka-index.html"
+    owner: "www-data"
+    group: "www-data"
+
+- name: update dash index.html
+  template:
+    src: "dashref-index.html.j2"
+    dest: "/var/www/html/dashref-index.html"
+    owner: "www-data"
+    group: "www-data"
+
+
+- name: update hls index.html
+  template:
+    src: "hls-index.html.j2"
+    dest: "/var/www/html/hls-index.html"
+    owner: "www-data"
+    group: "www-data"
+
+
 - name: upload website assets
   copy:
     src: "{{ item.src }}"
@@ -48,6 +71,8 @@
     - src: "video-js.min.css"
     - src: "video.min.js"
     - src: "videojs-http-streaming.min.js"
+    - src: "videojs-dash.min.js"
+    - src: "shaka-player.compiled.js"
   loop_control:
     label: "{{ item.src }}"
 

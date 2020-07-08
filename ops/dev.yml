@@ -1,6 +1,6 @@
 ---
 - hosts: dev
-  var:
+  vars:
     certbot_create_if_missing: true
     certbot_create_standalone_stop_services: 
       - nginx  
@@ -11,5 +11,5 @@
     certbot_auto_renew_options: "--quiet --no-self-upgrade"
   roles:
     - ubuntu_base
-    - geerlingguy.certbot
     - nginx_rtmp
+    - geerlingguy.certbot

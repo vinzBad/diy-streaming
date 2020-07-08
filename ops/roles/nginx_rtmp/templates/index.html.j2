@@ -8,13 +8,13 @@
         <center>
         <h1>live streaming</h1>
         <video-js id="liveplayer" controls autoplay width=600 class="vjs-default-skin">
-            <source src="https://{{ nginx_rtmp.server_name }}/hls/{{ nginx_rtmp.stream_key }}.m3u8" type="application/x-mpegURL">
+            <source src="https://{{ nginx_rtmp.server_name }}/{{ nginx_rtmp.stream_secret }}/hls/{{ nginx_rtmp.stream_key }}.m3u8" type="application/x-mpegURL">
         </video-js>
 
         <br><br>
 
         <video width=600 data-dashjs-player autoplay controls
-            src=https://{{ nginx_rtmp.server_name }}/dsh/{{ nginx_rtmp.stream_key }}.mpd></video>
+            src=https://{{ nginx_rtmp.server_name }}/{{ nginx_rtmp.stream_secret }}/dsh/{{ nginx_rtmp.stream_key }}.mpd></video>
 
         </center>
 
